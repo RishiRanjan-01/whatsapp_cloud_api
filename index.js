@@ -19,20 +19,22 @@ app.listen(process.env.PORT || 8080, () => {
 })
 
 app.get("/webhook", (req,res) => {
+    console.log("inside webhook get request");
     let mode = req.query["hub.mode"];
     let challange = req.query["hub.challange"];
     let token_toverify = req.query["hub.verify_token"];
 
-
+    console.log("variables: ", mode, challange, token_toverify);
     if(mode && token_toverify){
+        console.log("inside If Condition");
         if(mode === "subscribe" && token_toverify === myToken){
             res.status(200).send(challange);
+            console.log("inside Double if Condition");
         }
         else{
             res.status(403).send("Forbidden");
         }
     }
-
 });
 
 app.post("/webhook", (req, res) => {
