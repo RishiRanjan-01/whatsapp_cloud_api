@@ -49,20 +49,51 @@ app.post("/webhook", (req, res) => {
             let from = body_param.entry[0].changes[0].value.messages[0].from;
             let msg_body = body_param.entry[0].changes[0].value.messages[0].body;
 
-            axios({
-                method: "POST",
-                url: "https://graph.facebook.com/v15.0/"+phoneNo_id+"/message?access_token="+token,
-                data:{
-                    messaging_product:"whatsapp",
-                    to:from,
-                    text:{
-                        body: "Hi I am Rishi"
-                    }
-                },
-                Headers:{
-                    "Content-Type": "application/json"
+            // axios({
+            //     method: "POST",
+            //     url: "https://graph.facebook.com/v15.0/"+phoneNo_id+"/message?access_token="+token,
+            //     data:{
+            //         messaging_product:"whatsapp",
+            //         to:from,
+            //         text:{
+            //             body: "Hi I am Rishi"
+            //         }
+            //     },
+            //     Headers:{
+            //         "Content-Type": "application/json"
+            //     }
+            // });
+
+            var data = JSON.stringify({
+                "messaging_product": "whatsapp",
+                "to": from,
+                "type": "template",
+                "template": {
+                  "name": "Hii I am Rishi",
+                  "language": {
+                    "code": "en_US"
+                  }
                 }
-            });
+              });
+              
+              var config = {
+                method: 'post',
+                url: `https://graph.facebook.com/v15.0/${phoneNo_id}/messages`,
+                headers: { 
+                  'Authorization': `Bearer ${token}`, 
+                  'Content-Type': 'application/json'
+                },
+                data : data
+              };
+              
+              axios(config)
+              .then(function (response) {
+                console.log(JSON.stringify(response.data));
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+              
             res.status(200);
         }
         else{
@@ -71,3 +102,4 @@ app.post("/webhook", (req, res) => {
     }
 
 });
+
