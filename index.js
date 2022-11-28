@@ -21,7 +21,7 @@ app.listen(process.env.PORT || 8080, () => {
 app.get("/webhook", (req,res) => {
     console.log("inside webhook get request");
     let mode = req.query["hub.mode"];
-    let challange = req.query["hub.challange"];
+    let challange = req.query["hub.challenge"];
     let token_toverify = req.query["hub.verify_token"];
 
     console.log("variables: ", mode, challange, token_toverify);
