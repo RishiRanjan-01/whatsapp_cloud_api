@@ -8,6 +8,48 @@ const app = express().use(body_parser.json());
 const token = process.env.TOKEN;
 const mytoken = process.env.MYTOKEN; //prasath_token
 
+const template = {
+  messaging_product: "whatsapp",
+  to: "917834844816",
+  type: "template",
+  template: {
+    name: "sample_flight_confirmation",
+    language: {
+      code: "en_US",
+    },
+    components: [
+      {
+        type: "header",
+        parameters: [
+          {
+            type: "document",
+            document: {
+              link: "https://drive.google.com/drive/u/0/folders/11RrY9eAQhVVF1YoM6ogGeuMocmILiARw",
+            },
+          },
+        ],
+      },
+      {
+        type: "body",
+        parameters: [
+          {
+            type: "text",
+            text: "Delhi",
+          },
+          {
+            type: "text",
+            text: "Sikkim",
+          },
+          {
+            type: "text",
+            text: "02/12/2022",
+          },
+        ],
+      },
+    ],
+  },
+};
+
 app.listen(process.env.PORT, () => {
   console.log("webhook is listening");
 });
@@ -53,25 +95,8 @@ app.post("/webhook", (req, res) => {
 
       axios({
         method: "POST",
-        url:
-          "https://graph.facebook.com/v13.0/" +
-          phon_no_id +
-          "/messages?access_token=" +
-          token,
-        data: {
-          messaging_product: "whatsapp",
-          to: from,
-          type: "template",
-          template: {
-            name: "sample_shipping_confirmation",
-            language: {
-              code: "en_US",
-            },
-          },
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
+        url: `https://graph.facebook.com/v13.0/${phon_no_id}/messages?access_token=${token}`,
+        data: template,
       });
 
       res.sendStatus(200);
