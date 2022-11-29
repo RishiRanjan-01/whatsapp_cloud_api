@@ -31,7 +31,7 @@ app.post("/webhook", (req, res) => {
   //i want some
 
   let body_param = req.body;
-  console.log(body_param);
+  // console.log(body_param);
   console.log(JSON.stringify(body_param, null, 2));
 
   if (body_param.object) {
@@ -63,11 +63,11 @@ app.post("/webhook", (req, res) => {
           to: from,
           type: "template",
           template: {
-            name: "bus_booking_details",
+            name: "sample_shipping_confirmation",
             language: {
               code: "en_US",
             },
-          }
+          },
         },
         headers: {
           "Content-Type": "application/json",
